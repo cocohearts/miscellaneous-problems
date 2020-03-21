@@ -22,22 +22,25 @@ class Node:
             node2 = Node.list_nodes[key2]
 
         node1.children.add(node2)
+    
+    def descendants(self):
+        our_set = set([self])
+        self.recursive_descendants(our_set,set([]))
+        return our_set
 
-    def descendants(self,our_set,visited_nodes):
+    def recursive_descendants(self,our_set,visited_nodes):
         if self.children:
             our_set.update(self.children)
             if not self in visited_nodes:
                 visited_nodes.add(self)
                 for child in self.children:
-                    child.descendants(our_set,visited_nodes)
+                    child.recursive_descendants(our_set,visited_nodes)
         else:
             return
 
     def dependent(self,key):
         node = self.list_nodes[key]
-        our_set = set([self])
-        visited = set([])
-        self.descendants(our_set,visited)
+        our_set = self.descendants()
         return (node in our_set)
 
 def solve_problem(list_tuples,list_questions):
