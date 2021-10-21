@@ -93,7 +93,7 @@ def my_output(polynomial):
         fout.write("\n\\[\\sum_{k=1}^x k^{" + str(len(polynomial)-2) + "}=" + written[2:]+"\\]")
 
 
-for degree in range(20):
+for degree in range(int(input())):
     polynomials = my_input(degree)
     if polynomials:
         my_output(list(main(polynomials).coefficients))
