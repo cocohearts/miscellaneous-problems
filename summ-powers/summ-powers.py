@@ -34,23 +34,20 @@ def main(input_polynomials):
     output: polynomial
     """
     def binom(a,b):
-        returned = 1
-        for r in range(b+1,a+1):
-            returned *= r
-        for r in range(1,a-b+1):
-            returned /= r
-        return returned
+        return int(math.factorial(a)/(math.factorial(b)*math.factorial(a-b)))
 
     c = len(input_polynomials)
     return_polynomial = [Fraction(0,1)]
 
     for index in range(1,c+2):
-        return_polynomial.append(Fraction(binom(c+1,index),1))
+        return_polynomial.append(Fraction(int(binom(c+1,index)),1))
 
     return_poly = Polynomial(np.array(return_polynomial))
 
     for k in range(c):
-        return_poly.subtract(Polynomial(input_polynomials[k].coefficients * binom(c+1,k)))
+        return_poly.subtract(Polynomial(input_polynomials[k].coefficients * int(binom(c+1,k))))
+        #subtracted = input_polynomials[k].coefficients * binom(c+1,k)
+        #return_poly.coefficients -= subtracted
 
     return_poly.coefficients /= c+1
 
@@ -76,6 +73,8 @@ def my_input(degree):
 def my_output(polynomial):
     with open("data.txt", 'a') as fout:
         fout.write("\n"+str(polynomial))
+        #print("\n"+str(polynomial))
+        
     with open("formatted.txt", 'a') as fout:
         written = ""
         for index in range(len(polynomial)):
@@ -94,7 +93,7 @@ def my_output(polynomial):
         fout.write("\n\\[\\sum_{k=1}^x k^{" + str(len(polynomial)-2) + "}=" + written[2:]+"\\]")
 
 
-for degree in range(input()):
+for degree in range(20):
     polynomials = my_input(degree)
     if polynomials:
         my_output(list(main(polynomials).coefficients))
